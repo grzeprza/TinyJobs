@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="pl.project.gpmw.tinyjobs.MenuActivity">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_centerInParent="true"
+       android:orientation="vertical"
+       android:weightSum="6"
+       >
+
+       <Space
+           android:layout_width="match_parent"
+           android:layout_height="30dp"
+           android:layout_weight="1"
+           />
+
+       <Button
+           android:text="@string/find_tiny_jobs"
+           android:layout_gravity="center_horizontal"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="10dp"
+           android:padding="10dp"
+           android:textSize="20sp"
+           android:textColor="#FFFFFF"
+           android:layout_weight="1"
+           android:background="@drawable/round_button"/>
+
+       <Button
+           android:text="@string/place_tiny_task"
+           android:layout_gravity="center_horizontal"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:padding="10dp"
+           android:layout_margin="10dp"
+           android:textColor="#FFFFFF"
+           android:layout_weight="1"
+           android:background="@drawable/round_button"/>
+
+       <Button
+           android:text="@string/my_tasks"
+           android:layout_gravity="center_horizontal"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="10dp"
+           android:textSize="20sp"
+           android:padding="20dp"
+           android:textColor="#FFFFFF"
+           android:layout_weight="1"
+           android:background="@drawable/round_button"/>
+
+       <Button
+           android:text="@string/get_more_points"
+           android:layout_gravity="center_horizontal"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="10dp"
+           android:textSize="20sp"
+           android:padding="10dp"
+           android:textColor="#FFFFFF"
+           android:layout_weight="1"
+           android:background="@drawable/round_button"/>
+
+       <Space
+           android:layout_width="match_parent"
+           android:layout_height="30dp"
+           android:layout_weight="1"
+           />
+
+   </LinearLayout>
+
+    <!-- view for AdMob Banner Ad -->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/menu_adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="Banner"
+        ads:adUnitId="@string/banner_ad_unit_id" />
+
+</RelativeLayout>

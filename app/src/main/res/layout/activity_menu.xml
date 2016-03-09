@@ -5,6 +5,46 @@
     android:layout_height="match_parent"
     tools:context="pl.project.gpmw.tinyjobs.MenuActivity">
 
+
+    <RelativeLayout
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/textView_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="User Name"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentStart="true"
+            />
+
+        <TextView
+            android:id="@+id/button_userPoints"
+            android:text="15"
+            android:textColor="#cf1b36"
+            android:textSize="20dp"
+            android:padding="6dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/textView_userName"
+            android:background="@drawable/circle_item"/>
+
+        <RatingBar
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:foregroundGravity="top"
+            />
+    </RelativeLayout>
+
+
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"
@@ -15,11 +55,12 @@
 
        <Space
            android:layout_width="match_parent"
-           android:layout_height="30dp"
+           android:layout_height="35dp"
            android:layout_weight="1"
            />
 
        <Button
+           android:id="@+id/button_findTinyJob"
            android:text="@string/find_tiny_jobs"
            android:layout_gravity="center_horizontal"
            android:layout_width="wrap_content"
@@ -29,9 +70,10 @@
            android:textSize="20sp"
            android:textColor="#FFFFFF"
            android:layout_weight="1"
-           android:background="@drawable/round_button"/>
+           android:background="@drawable/rounded_corners"/>
 
        <Button
+           android:id="@+id/button_placeTinyJob"
            android:text="@string/place_tiny_task"
            android:layout_gravity="center_horizontal"
            android:layout_width="wrap_content"
@@ -41,9 +83,10 @@
            android:layout_margin="10dp"
            android:textColor="#FFFFFF"
            android:layout_weight="1"
-           android:background="@drawable/round_button"/>
+           android:background="@drawable/rounded_corners"/>
 
        <Button
+           android:id="@+id/button_myTasks"
            android:text="@string/my_tasks"
            android:layout_gravity="center_horizontal"
            android:layout_width="wrap_content"
@@ -53,9 +96,10 @@
            android:padding="20dp"
            android:textColor="#FFFFFF"
            android:layout_weight="1"
-           android:background="@drawable/round_button"/>
+           android:background="@drawable/rounded_corners"/>
 
        <Button
+           android:id="@+id/button_getMorePoints"
            android:text="@string/get_more_points"
            android:layout_gravity="center_horizontal"
            android:layout_width="wrap_content"
@@ -65,7 +109,7 @@
            android:padding="10dp"
            android:textColor="#FFFFFF"
            android:layout_weight="1"
-           android:background="@drawable/round_button"/>
+           android:background="@drawable/rounded_corners"/>
 
        <Space
            android:layout_width="match_parent"

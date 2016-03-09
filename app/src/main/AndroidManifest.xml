@@ -42,12 +42,28 @@
 
         <activity
             android:name=".MenuActivity"
-            android:label="@string/title_activity_menu"></activity>
+            android:label="@string/title_activity_menu" />
         <!-- Include the AdActivity configChanges and theme. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name=".FindTinyJobsActivity"
+            android:label="Menu / Find Tiny Jobs">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MenuActivity" />
+        </activity>
+
+        <activity
+            android:name=".PlaceTinyJob"
+            android:label="Menu / Place Tiny Job">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MenuActivity"/>
+        </activity>
     </application>
 
 </manifest>

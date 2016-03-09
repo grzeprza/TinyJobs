@@ -36,11 +36,12 @@
             android:background="@drawable/circle_item"/>
 
         <RatingBar
-            android:layout_width="200dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:foregroundGravity="top"
+            style="?android:attr/ratingBarStyleSmall"
             />
     </RelativeLayout>
 
@@ -126,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        ads:adSize="Banner"
+        ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id" />
 
 </RelativeLayout>

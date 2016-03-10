@@ -49,7 +49,17 @@ public class MenuActivity extends AppCompatActivity {
         button_placeTinyJobs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent (v.getContext(), PlaceTinyJob.class);
+                Intent i = new Intent (v.getContext(), PlaceTinyJobActivity.class);
+                startActivity(i);
+            }
+        });
+
+        //STARTS MY TASKS ACTIVITY
+        button_myTasks = (Button) findViewById(R.id.button_myTasks);
+        button_myTasks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), MyTasksActivity.class);
                 startActivity(i);
             }
         });

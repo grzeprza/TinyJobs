@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class PlaceTinyJob extends AppCompatActivity {
+public class PlaceTinyJobActivity extends AppCompatActivity {
 
     Calendar myCalendar = Calendar.getInstance();
     EditText editText_date;

@@ -58,12 +58,28 @@
         </activity>
 
         <activity
-            android:name=".PlaceTinyJob"
+            android:name=".PlaceTinyJobActivity"
             android:label="Menu / Place Tiny Job">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MenuActivity"/>
+                android:value=".MenuActivity" />
         </activity>
+
+        <activity
+            android:name=".MyTasksActivity"
+            android:label="Menu / My Tasks">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MenuActivity" />
+        </activity>
+
+        <activity android:name=".TabFinished">
+        </activity>
+        <activity android:name=".TabRaised">
+        </activity>
+        <activity android:name=".TabTaken">
+        </activity>
+
     </application>
 
 </manifest>

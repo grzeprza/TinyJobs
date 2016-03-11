@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class MenuActivity extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
@@ -18,6 +20,7 @@ public class MenuActivity extends AppCompatActivity {
             + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
 
     Button button_findTinyJobs, button_placeTinyJobs, button_myTasks, button_getMorePoints;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +66,67 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        //STARTS GET MORE POINTS ACTIVITY
+        button_getMorePoints = (Button) findViewById(R.id.button_getMorePoints);
+        button_getMorePoints.setEnabled(false);
+        button_getMorePoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Intent i = new Intent(v.getContext(), GetMorePointsActivity.class);
+               // startActivity(i);
+
+                showInterstitial();
+            }
+        });
+
+        // Create the InterstitialAd and set the adUnitId (defined in values/strings.xml).
+        mInterstitialAd = newInterstitialAd();
+        loadInterstitial();
     }
 
+    private InterstitialAd newInterstitialAd() {
+        InterstitialAd interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                button_getMorePoints.setEnabled(true);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                button_getMorePoints.setEnabled(true);
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Proceed to the next level.
+                mInterstitialAd = newInterstitialAd();
+                loadInterstitial();
+            }
+        });
+        return interstitialAd;
+    }
+
+    private void showInterstitial() {
+        // Show the ad if it's ready. Otherwise toast and reload the ad.
+        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            Toast.makeText(this, "Ad did not load", Toast.LENGTH_SHORT).show();
+            mInterstitialAd = newInterstitialAd();
+            loadInterstitial();
+        }
+    }
+
+    private void loadInterstitial() {
+        // Disable the next level button and load the ad.
+        button_getMorePoints.setEnabled(false);
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+        mInterstitialAd.loadAd(adRequest);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

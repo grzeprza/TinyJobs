@@ -1,6 +1,5 @@
 package pl.project.gpmw.tinyjobs;
 
-import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,19 +17,19 @@ public class MyTasksActivity extends TabActivity {
 
         tabHost = (TabHost) findViewById(android.R.id.tabhost);
 
-        tab0 = tabHost.newTabSpec("FINISHED");
-        tab1 = tabHost.newTabSpec("RAISED");
-        tab2 = tabHost.newTabSpec("TAKEN");
+        tab0 = tabHost.newTabSpec("finished");
+        tab1 = tabHost.newTabSpec("raised");
+        tab2 = tabHost.newTabSpec("taken");
 
-        tab0.setIndicator("tab0");
+        tab0.setIndicator("FINISHED");
         Intent i0 = new Intent(getApplicationContext(), TabFinished.class);
         tab0.setContent(i0);
 
-        tab1.setIndicator("tab1");
+        tab1.setIndicator("RAISED");
         Intent i1 = new Intent(getApplicationContext(), TabRaised.class);
         tab1.setContent(i1);
 
-        tab2.setIndicator("tab2");
+        tab2.setIndicator("TAKEN");
         Intent i2 = new Intent(getApplicationContext(), TabTaken.class);
         tab2.setContent(i2);
 
@@ -42,58 +41,3 @@ public class MyTasksActivity extends TabActivity {
 }
 
 
-class TabFinished extends Activity
-{
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-/*
-        TextView  tv=new TextView(this);
-        tv.setTextSize(25);
-        tv.setGravity(Gravity.CENTER_VERTICAL);
-        tv.setText("This Is Tab1 Activity");
-
-        setContentView(tv);
-*/
-        setContentView(R.layout.tab_finished);
-
-
-    }
-}
-
-class TabRaised extends Activity
-{
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_raised);
-
-      /*  TextView  tv=new TextView(this);
-        tv.setTextSize(25);
-        tv.setGravity(Gravity.CENTER_VERTICAL);
-        tv.setText("This Is Tab2 Activity");
-
-        setContentView(tv);
-*/    }
-}
-
-class TabTaken extends Activity
-{
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-/*
-        TextView  tv=new TextView(this);
-        tv.setTextSize(25);
-        tv.setGravity(Gravity.CENTER_VERTICAL);
-        tv.setText("This Is Tab2 Activity");
-
-        setContentView(tv);
-  */      setContentView(R.layout.tab_taken);
-    }
-}

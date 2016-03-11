@@ -33,6 +33,9 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
+/*TODO GENERAL: connect to database to verify user and password
+* */
+
 /**
  * A login screen that offers login via email/password.
  */

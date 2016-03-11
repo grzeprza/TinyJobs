@@ -33,7 +33,8 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-/**
+/*TODO GENERAL: register user to database
+ *
  * A login screen that offers login via email/password.
  */
 public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {

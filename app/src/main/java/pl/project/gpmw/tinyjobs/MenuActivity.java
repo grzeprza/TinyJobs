@@ -14,6 +14,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
+
+/*TODO import name,points,ranking(stars) after login/register from database
+*TODO some serious AD should be in the bottom banner
+* */
 public class MenuActivity extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
     private static final String TOAST_TEXT = "Test ads are being shown. "

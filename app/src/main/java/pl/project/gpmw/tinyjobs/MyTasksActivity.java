@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TabHost;
 
+/*  TODO create list view adapter
+    TODO data loaded on start
+* */
 public class MyTasksActivity extends TabActivity {
 
     TabHost tabHost;

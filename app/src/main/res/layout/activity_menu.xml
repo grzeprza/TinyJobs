@@ -46,7 +46,7 @@
     </RelativeLayout>
 
 
-   <LinearLayout
+    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:layout_centerInParent="true"
@@ -73,7 +73,7 @@
            android:layout_weight="1"
            android:background="@drawable/rounded_corners"/>
 
-       <Button
+        <Button
            android:id="@+id/button_placeTinyJob"
            android:text="@string/place_tiny_task"
            android:layout_gravity="center_horizontal"

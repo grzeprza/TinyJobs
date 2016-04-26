@@ -98,26 +98,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                attemptLogin();
-            }
-        });
-
-        Button mRegisterButton = (Button) findViewById(R.id.button_register);
-        mRegisterButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(i);
-            }
-        });
+//        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+//        mEmailSignInButton.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                attemptLogin();
+//            }
+//        });
+//
+//        Button mRegisterButton = (Button) findViewById(R.id.button_register);
+//        mRegisterButton.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+//                startActivity(i);
+//            }
+//        });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -247,7 +247,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private boolean isPasswordValid(String password)
     {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        //return password.length() > 4;
+        return true;
     }
 
     /**
@@ -421,18 +422,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     //Sending request to log in
-    public void login(View v)
+    public void signInSignUp(View v)
     {
+        final String signAction
+                = (v == (Button) findViewById(R.id.email_sign_in_button)) ? "login" : "register";
+        if(signAction == "login")
+            attemptLogin();
+
         //getting written credentials
-        final String loginEmail = ((EditText) findViewById(R.id.email)).getText().toString();
-        final String loginPassword = ((EditText) findViewById(R.id.password)).getText().toString();
+        final String signEmail = ((EditText) findViewById(R.id.email)).getText().toString();
+        final String signPassword = ((EditText) findViewById(R.id.password)).getText().toString();
 
         //creating a new queue, which will send one request only
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String suffix = "login";
 
         //IP address specific for localhost from the point of view of the virtual machine
-        String url = "http://10.0.3.2:5000/" + suffix;
+
+        String url = getResources().getString(R.string.ipAddress) + suffix;
         StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
         {
             @Override
@@ -444,7 +451,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         {
             public void onErrorResponse(VolleyError error)
             {
-                Log.d("Something shat as fuck", error.toString());
+                Log.d("Something went wrong", error.toString());
             }
         })
         {
@@ -453,30 +460,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             {
                 //parameters are send as a dictionary
                 Map<String, String> params = new HashMap<>();
-                params.put("email", loginEmail);
-                params.put("password", loginPassword);
+                params.put("email", signEmail);
+                params.put("password", signPassword);
+                params.put("action", signAction);
                 return params;
             }
         };
         requestQueue.add(putRequest);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

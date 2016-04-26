@@ -95,7 +95,7 @@ public class PlaceTinyJobActivity extends AppCompatActivity
         {
             public void onErrorResponse(VolleyError error)
             {
-                Log.d("Something shat as fuck", error.toString());
+                Log.d("Something went wrong", error.toString());
             }
         })
         {

@@ -2,6 +2,8 @@
     <string name="app_name">TinyJobs</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="ipAddress">http://10.0.3.2:5000/</string>
+    <string name="userName">no name</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

@@ -19,14 +19,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +31,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,19 +84,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent)
-            {
-                if (id == R.id.login || id == EditorInfo.IME_NULL)
-                {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener()
+//        {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent)
+//            {
+//                if (id == R.id.login || id == EditorInfo.IME_NULL)
+//                {
+//                    attemptLogin();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
 //        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
 //        mEmailSignInButton.setOnClickListener(new View.OnClickListener()
@@ -422,12 +422,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     //Sending request to log in
-    public void signInSignUp(View v)
+    public void onClick_signInSignUp(View v)
     {
-        final String signAction
-                = (v == (Button) findViewById(R.id.email_sign_in_button)) ? "login" : "register";
-        if(signAction == "login")
-            attemptLogin();
+        final String suffix
+            = (v == (Button) findViewById(R.id.email_sign_in_button)) ? "login" : "register";
+//        if(suffix == "login")
+//            attemptLogin();
 
         //getting written credentials
         final String signEmail = ((EditText) findViewById(R.id.email)).getText().toString();
@@ -435,17 +435,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //creating a new queue, which will send one request only
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String suffix = "login";
 
         //IP address specific for localhost from the point of view of the virtual machine
 
         String url = getResources().getString(R.string.ipAddress) + suffix;
-        StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
+        StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
             public void onResponse(String response)
             {
                 Log.d("Response", response);
+                try
+                {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if(suffix == "login" && jsonObject.getString("response").equals("true"))
+                    {
+                        attemptLogin();
+                    }
+                    else
+                        mEmailView.setError(getString(R.string.wrong_credentials));
+                        mEmailView.requestFocus();
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener()
         {
@@ -461,8 +474,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //parameters are send as a dictionary
                 Map<String, String> params = new HashMap<>();
                 params.put("email", signEmail);
-                params.put("password", signPassword);
-                params.put("action", signAction);
+                params.put("hash", signPassword);
                 return params;
             }
         };

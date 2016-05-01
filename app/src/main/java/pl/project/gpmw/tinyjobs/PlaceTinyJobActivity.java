@@ -70,7 +70,7 @@ public class PlaceTinyJobActivity extends AppCompatActivity
         editText_date.setText(simpleDateFormat.format(myCalendar.getTime()));
     }
 
-    public void placeJob(View v)
+    public void onClick_placeJob(View v)
     {
         final String taskName = ((EditText) findViewById(R.id.editText_placeTinyJob_taskName)).getText().toString();
         final String taskDescription = ((EditText) findViewById(R.id.editText_placeTinyJob_taskDescription)).getText().toString();
@@ -81,10 +81,12 @@ public class PlaceTinyJobActivity extends AppCompatActivity
         final String taskPhone = ((EditText) findViewById(R.id.editText_placeTinyJob_contactPhone)).getText().toString();
         final String taskProfit = ((EditText) findViewById(R.id.editText_placeTinyJob_profit)).getText().toString();
 
+
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String suffix = "putjob";
         String url = "http://10.0.3.2:5000/" + suffix;
-        StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
+        StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
             public void onResponse(String response)

@@ -141,5 +141,5 @@
         android:layout_height="60dp"
         android:text="Submit Job"
         android:layout_alignParentBottom="true"
-        android:onClick="placeJob"/>
+        android:onClick="onClick_placeJob"/>
 </RelativeLayout>

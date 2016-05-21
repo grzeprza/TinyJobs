@@ -447,17 +447,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.d("Response", response);
                 try
                 {
+                    attemptLogin();
                     JSONObject jsonObject = new JSONObject(response);
                     if(suffix == "login" && jsonObject.getString("response").equals("true"))
                     {
-                        attemptLogin();
+                        //attemptLogin();
                     }
-                    else
-                        mEmailView.setError(getString(R.string.wrong_credentials));
-                        mEmailView.requestFocus();
                 } catch (JSONException e)
                 {
-                    e.printStackTrace();
+                    Log.d("Error:", "400");
+                    mEmailView.setError(getString(R.string.wrong_credentials));
+                    mEmailView.requestFocus();
+                    //e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener()
@@ -465,6 +466,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onErrorResponse(VolleyError error)
             {
                 Log.d("Something went wrong", error.toString());
+                mEmailView.setError(getString(R.string.no_database_connection));
             }
         })
         {

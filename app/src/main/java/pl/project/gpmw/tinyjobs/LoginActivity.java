@@ -422,12 +422,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     //Sending request to log in
+    //Not very clear code: one function is responsible for both logging and registering
+    //due to fact the the difference is just the suffix
     public void onClick_signInSignUp(View v)
     {
+        attemptLogin();
         final String suffix
             = (v == (Button) findViewById(R.id.email_sign_in_button)) ? "login" : "register";
-//        if(suffix == "login")
-//            attemptLogin();
 
         //getting written credentials
         final String signEmail = ((EditText) findViewById(R.id.email)).getText().toString();
@@ -447,7 +448,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.d("Response", response);
                 try
                 {
-                    attemptLogin();
                     JSONObject jsonObject = new JSONObject(response);
                     if(suffix == "login" && jsonObject.getString("response").equals("true"))
                     {

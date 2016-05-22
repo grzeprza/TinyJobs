@@ -1,11 +1,15 @@
 package pl.project.gpmw.tinyjobs;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class TabTaken extends Activity
+public class TabTaken extends ListFragment
 {
     private Task[] parsedData = {
             new Task("ic_launcher","Zamiatanie pustyni",100),
@@ -19,16 +23,18 @@ public class TabTaken extends Activity
     private ArrayAdapter arrayAdapterr;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_taken);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        listVieww = (ListView) findViewById(R.id.listView_finished);
+        View rootView = inflater.inflate(R.layout.taken, container, false);
 
-        arrayAdapterr = new TaskAdapter(this,R.layout.row, this.parsedData);
+        arrayAdapterr = new TaskAdapter(getActivity(), R.layout.row, parsedData);
+        setListAdapter(arrayAdapterr);
 
-        if (listVieww != null) listVieww.setAdapter(arrayAdapterr);
+        return rootView;
+    }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_SHORT);
     }
 }

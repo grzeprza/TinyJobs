@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\GrzegorzLap\Desktop\TinyJobs\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="4afcdd7ee3e0f3c3d60fdb6dbbb679066ca8de0c">
+        <dex dex="C:\Users\GrzegorzLap\Desktop\TinyJobs\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_9432a88b8810aeb48ff514395dc554876c306630.jar" />
+    </item>
+
+</items>

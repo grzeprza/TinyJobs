@@ -1,46 +1,74 @@
 package pl.project.gpmw.tinyjobs;
 
-import android.app.TabActivity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TabHost;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
-/*  TODO create list view adapter
-    TODO data loaded on start
-* */
-public class MyTasksActivity extends TabActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-    TabHost tabHost;
-    TabHost.TabSpec tab0,tab1,tab2;
+public class MyTasksActivity extends AppCompatActivity {
+
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_tasks);
 
-        tabHost = (TabHost) findViewById(android.R.id.tabhost);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        tab0 = tabHost.newTabSpec("finished");
-        tab1 = tabHost.newTabSpec("raised");
-        tab2 = tabHost.newTabSpec("taken");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        tab0.setIndicator("FINISHED");
-        Intent i0 = new Intent(getApplicationContext(), TabFinished.class);
-        tab0.setContent(i0);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
 
-        tab1.setIndicator("RAISED");
-        Intent i1 = new Intent(getApplicationContext(), TabRaised.class);
-        tab1.setContent(i1);
-
-        tab2.setIndicator("TAKEN");
-        Intent i2 = new Intent(getApplicationContext(), TabTaken.class);
-        tab2.setContent(i2);
-
-        tabHost.addTab(tab0);
-        tabHost.addTab(tab1);
-        tabHost.addTab(tab2);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new TabRaised(), "RAISED");
+        adapter.addFragment(new TabTaken(), "TAKEN");
+        adapter.addFragment(new TabFinished(), "FINISHED");
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
 }
-
-

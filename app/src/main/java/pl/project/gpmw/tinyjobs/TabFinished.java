@@ -1,23 +1,17 @@
 package pl.project.gpmw.tinyjobs;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-public class TabFinished extends Activity
+public class TabFinished extends ListFragment
 {
+
    private Task[] parsedDataa = {
            new Task("ic_launcher","Zakupy",2),
            new Task("ic_launcher","Pranie",5),
@@ -38,51 +32,18 @@ public class TabFinished extends Activity
     private ArrayAdapter arrayAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_finished);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        listView = (ListView) findViewById(R.id.listView_finished);
+        View rootView = inflater.inflate(R.layout.finished, container, false);
 
-        arrayAdapter = new TaskAdapter(this, R.layout.row, parsedDataa);
+        arrayAdapter = new TaskAdapter(getActivity(),R.layout.row,parsedDataa);
+        setListAdapter(arrayAdapter);
 
-        if (listView != null) listView.setAdapter(arrayAdapter);
+        return rootView;
+    }
 
-
-        //creating a new queue, which will send one request only
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-        //IP address specific for localhost from the point of view of the virtual machine
-        final String suffix = "getjobs";
-        String url = getResources().getString(R.string.ipAddressVm) + suffix;
-        StringRequest putRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
-        {
-            @Override
-            public void onResponse(String response)
-            {
-                Log.d("Response", response);
-                try
-                {
-                    JSONObject jsonObject = new JSONObject(response);
-
-                    JSONObject task = new JSONObject(jsonObject.getString("results"));
-                    parsedDataa[0] = new Task("ic_launcher", jsonObject.toString(), 10);
-                } catch (JSONException e)
-                {
-                    Log.d("", e.toString());
-                }
-            }
-        }, new Response.ErrorListener()
-        {
-            public void onErrorResponse(VolleyError error)
-            {
-                Log.d("Something went wrong", error.toString());
-            }
-        });
-        requestQueue.add(putRequest);
-        arrayAdapter = new TaskAdapter(this, R.layout.row, parsedDataa);
-
-        if (listView != null) listView.setAdapter(arrayAdapter);
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_SHORT);
     }
 }

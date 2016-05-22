@@ -66,19 +66,11 @@
         </activity>
         <activity
             android:name=".MyTasksActivity"
-            android:label="Menu / My Tasks">
+            android:label="Menu / My Tasks"
+            android:theme = "@style/MyTaskTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MenuActivity" />
-        </activity>
-        <activity android:name=".TabFinished">
-
-        </activity>
-        <activity android:name=".TabRaised">
-
-        </activity>
-        <activity android:name=".TabTaken">
-
         </activity>
 
     </application>

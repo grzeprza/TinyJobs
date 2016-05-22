@@ -1,11 +1,16 @@
 package pl.project.gpmw.tinyjobs;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class TabRaised extends Activity
+
+public class TabRaised extends ListFragment
 {
     private Task[] parsedDaata = {
             new Task("ic_launcher","Pranie",5),
@@ -27,16 +32,18 @@ public class TabRaised extends Activity
     private ArrayAdapter aarrayAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_raised);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        llistView = (ListView) findViewById(R.id.listView_finished);
+        View rootView = inflater.inflate(R.layout.raised, container, false);
 
-        aarrayAdapter = new TaskAdapter(this,R.layout.row, parsedDaata);
+        aarrayAdapter = new TaskAdapter(getActivity(), R.layout.row, parsedDaata);
+        setListAdapter(aarrayAdapter);
 
-        if (llistView != null) llistView.setAdapter(aarrayAdapter);
+        return rootView;
+    }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_SHORT);
     }
 }

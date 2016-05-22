@@ -113,7 +113,6 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAcceptance"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_register"

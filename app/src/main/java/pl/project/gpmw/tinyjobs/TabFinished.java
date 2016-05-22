@@ -55,7 +55,7 @@ public class TabFinished extends Activity
 
         //IP address specific for localhost from the point of view of the virtual machine
         final String suffix = "getjobs";
-        String url = getResources().getString(R.string.ipAddress) + suffix;
+        String url = getResources().getString(R.string.ipAddressVm) + suffix;
         StringRequest putRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
         {
             @Override

@@ -439,13 +439,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //IP address specific for localhost from the point of view of the virtual machine
 
-        String url = getResources().getString(R.string.ipAddress) + suffix;
+        String url = getResources().getString(R.string.ipAddressExt) + suffix;
         StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
             public void onResponse(String response)
             {
                 Log.d("Response", response);
+                Log.d("werresponse", response);
                 try
                 {
                     JSONObject jsonObject = new JSONObject(response);
@@ -455,7 +456,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
                 } catch (JSONException e)
                 {
-                    Log.d("Error:", "400");
+                    Log.d("werror:", "400");
                     mEmailView.setError(getString(R.string.wrong_credentials));
                     mEmailView.requestFocus();
                     //e.printStackTrace();

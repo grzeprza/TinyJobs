@@ -85,7 +85,7 @@ public class PlaceTinyJobActivity extends AppCompatActivity
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String suffix = "putjob";
-        String url = "http://10.0.3.2:5000/" + suffix;
+        String url = getResources().getString(R.string.ipAddressTel) + suffix;
         StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
@@ -112,6 +112,8 @@ public class PlaceTinyJobActivity extends AppCompatActivity
                 params.put("time", taskTime);
                 params.put("phone", taskPhone);
                 params.put("profit", taskProfit);
+                params.put("latitude", String.valueOf(MenuActivity.latitude));
+                params.put("longitude", String.valueOf(MenuActivity.longitude));
                 return params;
             }
         };

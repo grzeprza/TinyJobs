@@ -52,7 +52,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".FindTinyJobsActivity"
-            android:label="Menu / Find Tiny Jobs">
+            android:label="Menu / Find Tiny Jobs"
+            android:theme="@style/MyTaskTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MenuActivity" />

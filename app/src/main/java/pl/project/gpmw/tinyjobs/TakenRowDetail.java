@@ -29,17 +29,15 @@ public class TakenRowDetail extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Cancel this task ", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Cancel this task", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
-
         getWindow().setLayout((int) (width*0.8) ,(int) (height*0.9));
 
         Bundle bundle = getIntent().getExtras();

@@ -9,34 +9,61 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 
 public class TabRaised extends ListFragment
 {
-    private Task[] parsedDaata = {
-            new Task("ic_launcher","Pranie",5),
-            new Task("ic_launcher","Sprzątnie",1),
-            new Task("ic_launcher","Zakupki dla Andrzejka",15),
-            new Task("ic_launcher","Rab to drewno",20),
-            new Task("ic_launcher","Projekt z WTI",999),
-            new Task("ic_launcher","Skos trawe",25),
-            new Task("ic_launcher","Poziomki",2),
-            new Task("ic_launcher","Wino",3),
-            new Task("ic_launcher","Jagody",4),
-            new Task("ic_launcher","Zakupy",2),
-            new Task("ic_launcher","Matura",2),
-            new Task("ic_launcher","Przeczytaj za mnie lekture",10),
-            new Task("ic_launcher","Zrob sok",1),
-    };
-
     private ListView llistView;
     private ArrayAdapter aarrayAdapter;
+
+    Task myTasksArray[] = {};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        String samplejson = getArguments().getString("json");
+
         View rootView = inflater.inflate(R.layout.raised, container, false);
 
-        aarrayAdapter = new TaskAdapter(getActivity(), R.layout.row, parsedDaata);
+
+        try {
+
+            JSONObject jsonObject = new JSONObject(samplejson);
+            JSONArray resultArray = jsonObject.getJSONArray("results");
+
+            myTasksArray = new Task[resultArray.length()];
+
+            for(int i =0; i<resultArray.length(); i++)
+            {
+                JSONObject jsonObjectRow = resultArray.getJSONObject(i);
+
+                String id = jsonObjectRow.getString("id");
+                String imageName = "ic_launcher";
+                String taskDescr = jsonObjectRow.getString("name");
+                String taskDescr_fullDescription = jsonObjectRow.getString("description");
+                String address = jsonObjectRow.getString("address");
+                String date = jsonObjectRow.getString("date");
+                String time = jsonObjectRow.getString("time");
+                String phone = jsonObjectRow.getString("phone");
+                int taskMoney = jsonObjectRow.getInt("profit");
+
+                Task newTask = new Task(id,imageName,taskDescr,taskDescr_fullDescription, address, date, time,  phone, taskMoney);
+                myTasksArray[i] = newTask;
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        aarrayAdapter = new TaskAdapter(getActivity(), R.layout.row, myTasksArray);
         setListAdapter(aarrayAdapter);
 
         return rootView;
@@ -45,5 +72,24 @@ public class TabRaised extends ListFragment
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_SHORT);
+    }
+
+
+
+    public String getJSONFile()
+    {
+        String json = null;
+        try
+        {
+            InputStream is = getActivity().getResources().openRawResource(R.raw.samplejson);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String (buffer,"UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 }

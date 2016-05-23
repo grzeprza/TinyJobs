@@ -9,25 +9,58 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class TabTaken extends ListFragment
 {
-    private Task[] parsedData = {
-            new Task("ic_launcher","Zamiatanie pustyni",100),
-            new Task("ic_launcher","Dyskusja o koranie",25),
-            new Task("ic_launcher","Projekt WTI grupa 2",10),
-            new Task("ic_launcher","PUT - odmalowac sciany, wszedzie",2000),
-            new Task("ic_launcher","Rab to drewno",20)
-    };
-
     private ListView listVieww;
     private ArrayAdapter arrayAdapterr;
+
+    Task myTasksArray[] = {};
+    String iconName = "ic_launcher";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        String samplejson = getArguments().getString("json");
+
         View rootView = inflater.inflate(R.layout.taken, container, false);
 
-        arrayAdapterr = new TaskAdapter(getActivity(), R.layout.row, parsedData);
+
+        try {
+
+            JSONObject jsonObject = new JSONObject(samplejson);
+            JSONArray resultArray = jsonObject.getJSONArray("results");
+
+            myTasksArray = new Task[resultArray.length()];
+
+            for(int i =0; i<resultArray.length(); i++)
+            {
+                JSONObject jsonObjectRow = resultArray.getJSONObject(i);
+
+                String id = jsonObjectRow.getString("id");
+                String imageName = "ic_launcher";
+                String taskDescr = jsonObjectRow.getString("name");
+                String taskDescr_fullDescription = jsonObjectRow.getString("description");
+                String address = jsonObjectRow.getString("address");
+                String date = jsonObjectRow.getString("date");
+                String time = jsonObjectRow.getString("time");
+                String phone = jsonObjectRow.getString("phone");
+                int taskMoney = jsonObjectRow.getInt("profit");
+
+                Task newTask = new Task(id,imageName,taskDescr,taskDescr_fullDescription, address, date, time,  phone, taskMoney);
+                myTasksArray[i] = newTask;
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        arrayAdapterr = new TaskAdapter(getActivity(), R.layout.row, myTasksArray);
         setListAdapter(arrayAdapterr);
 
         return rootView;

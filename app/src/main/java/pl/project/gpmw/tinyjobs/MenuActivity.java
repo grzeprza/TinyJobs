@@ -42,6 +42,8 @@ public class MenuActivity extends AppCompatActivity implements GoogleApiClient.C
     protected GoogleApiClient mGoogleApiClient;
     public static double latitude;
     public static double longitude;
+    public static String name;
+    public static int id;
     protected Location mLastLocation;
 
     Button button_findTinyJobs, button_placeTinyJobs, button_myTasks, button_getMorePoints;

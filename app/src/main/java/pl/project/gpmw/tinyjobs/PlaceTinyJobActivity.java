@@ -114,6 +114,7 @@ public class PlaceTinyJobActivity extends AppCompatActivity
                 params.put("profit", taskProfit);
                 params.put("latitude", String.valueOf(MenuActivity.latitude));
                 params.put("longitude", String.valueOf(MenuActivity.longitude));
+                //params.put("user", MenuActivity.name);
                 return params;
             }
         };

@@ -431,13 +431,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //getting written credentials
         final String signEmail = ((EditText) findViewById(R.id.email)).getText().toString();
         final String signPassword = ((EditText) findViewById(R.id.password)).getText().toString();
+        MenuActivity.name = signEmail;
 
         //creating a new queue, which will send one request only
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         //IP address specific for localhost from the point of view of the virtual machine
 
-        String url = getResources().getString(R.string.ipAddressExt) + suffix;
+        String url = getResources().getString(R.string.ipAddressTel) + suffix;
         StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override

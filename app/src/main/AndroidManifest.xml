@@ -3,8 +3,8 @@
     package="pl.project.gpmw.tinyjobs">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -67,12 +67,38 @@
         <activity
             android:name=".MyTasksActivity"
             android:label="Menu / My Tasks"
-            android:theme = "@style/MyTaskTheme">
+            android:theme="@style/MyTaskTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MenuActivity" />
         </activity>
-
+        <activity
+            android:name=".RaisedRowDetail"
+            android:label="@string/title_activity_raised_row_detail"
+            android:parentActivityName=".MyTasksActivity"
+            android:theme="@style/AppTheme.CustomTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.project.gpmw.tinyjobs.MyTasksActivity" />
+        </activity>
+        <activity
+            android:name=".FinishedRowDetail"
+            android:label="@string/title_activity_finished_row_detail"
+            android:parentActivityName=".MyTasksActivity"
+            android:theme="@style/AppTheme.CustomTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.project.gpmw.tinyjobs.MyTasksActivity" />
+        </activity>
+        <activity
+            android:name=".TakenRowDetail"
+            android:label="@string/title_activity_taken_row_detail"
+            android:parentActivityName=".MyTasksActivity"
+            android:theme="@style/AppTheme.CustomTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.project.gpmw.tinyjobs.MyTasksActivity" />
+        </activity>
     </application>
 
 </manifest>

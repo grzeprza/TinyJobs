@@ -36,6 +36,16 @@ public class MyTasksActivity extends AppCompatActivity {
         GetTasks getTasks = new GetTasks();
         getTasks.execute();
 
+
+        bundleFinished = new Bundle();
+        bundleFinished.putString("json",samplejson);
+
+        bundleRaised = new Bundle();
+        bundleRaised.putString("json",samplejson);
+
+        bundleTaken = new Bundle();
+        bundleTaken.putString("json",samplejson);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,6 +57,8 @@ public class MyTasksActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -85,18 +97,6 @@ public class MyTasksActivity extends AppCompatActivity {
         }
 
         public void addFragment(Fragment fragment, String title) {
-
-            /*android.support.v4.app.ListFragment lf = new android.support.v4.app.ListFragment();
-            Bundle args = new Bundle();
-            args.putString("json",json);
-            Log.e("##############",json);
-            lf.setArguments(args);
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(,lf)
-                    .addToBackStack(null)
-                    .commit();*/
 
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
@@ -141,15 +141,7 @@ public class MyTasksActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String result="";
 
-            bundleFinished = new Bundle();
-            bundleFinished.putString("json",samplejson);
-
-            bundleRaised = new Bundle();
-            bundleRaised.putString("json",samplejson);
-
-            bundleTaken = new Bundle();
-            bundleTaken.putString("json",samplejson);
-
+            /*Tutaj polaczenie z serwerem*/
 
             return result;
         }

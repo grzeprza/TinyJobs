@@ -1,5 +1,6 @@
 package pl.project.gpmw.tinyjobs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -7,14 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class TabFinished extends ListFragment
 {
@@ -72,24 +69,10 @@ public class TabFinished extends ListFragment
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_SHORT);
+        Intent intent = new Intent(getContext(), FinishedRowDetail.class);
+        intent.putExtra("details",myTasksArray[position].toString());
+        startActivity(intent);
     }
 
-    public String getJSONFile()
-    {
-     String json = null;
-        try
-        {
-            InputStream is = getResources().openRawResource(R.raw.samplejson2);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String (buffer,"UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return json;
-    }
 }
 

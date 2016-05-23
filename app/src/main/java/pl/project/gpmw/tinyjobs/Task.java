@@ -69,4 +69,9 @@ public class Task {
     public String getImage() {
         return image;
     }
+
+    @Override
+    public String toString() {
+        return this.taskDescr + "@#" + this.taskDescr_fullDescription + "@#" + getTaskMoney() + "@#" + getTime() + "@#" + getDate() + "@#" + getImage() + "@#" + getAddress() + "@#" + getPhone();
+    }
 }

@@ -1,15 +1,15 @@
 package pl.project.gpmw.tinyjobs;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class TakenRowDetail extends AppCompatActivity {
+public class TakenRowDetail extends Activity {
 
     private TextView textView_title;
     private TextView textView_description;

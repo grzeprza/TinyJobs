@@ -3,15 +3,26 @@ package pl.project.gpmw.tinyjobs;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TabFinished extends ListFragment
 {
@@ -23,47 +34,77 @@ public class TabFinished extends ListFragment
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        String samplejson = getArguments().getString("json");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+       //String samplejson = getArguments().getString("json");
 
         View rootView = inflater.inflate(R.layout.finished, container, false);
-
-
-
-        try {
-
-            JSONObject jsonObject = new JSONObject(samplejson);
-            JSONArray resultArray = jsonObject.getJSONArray("results");
-
-            myTasksArray = new Task[resultArray.length()];
-
-            for(int i =0; i<resultArray.length(); i++)
+        try
+        {
+            RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
+            String suffix = "getjobs";
+            String url = MenuActivity.ipaddr + suffix;
+            StringRequest putRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
             {
-                JSONObject jsonObjectRow = resultArray.getJSONObject(i);
+                @Override
+                public void onResponse(String response)
+                {
+                    Log.d("WERR", response);
+                    try
+                    {
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray resultArray = jsonObject.getJSONArray("results");
 
-                String id = jsonObjectRow.getString("id");
-                String imageName = "ic_launcher";
-                String taskDescr = jsonObjectRow.getString("name");
-                String taskDescr_fullDescription = jsonObjectRow.getString("description");
-                String address = jsonObjectRow.getString("address");
-                String date = jsonObjectRow.getString("date");
-                String time = jsonObjectRow.getString("time");
-                String phone = jsonObjectRow.getString("phone");
-                int taskMoney = jsonObjectRow.getInt("profit");
+                        myTasksArray = new Task[resultArray.length()];
 
-                Task newTask = new Task(id,imageName,taskDescr,taskDescr_fullDescription, address, date, time,  phone, taskMoney);
-                myTasksArray[i] = newTask;
-            }
+                        for(int i =0; i<resultArray.length(); i++)
+                        {
+                            JSONObject jsonObjectRow = resultArray.getJSONObject(i);
+
+                            String id = jsonObjectRow.getString("id");
+                            String imageName = "ic_launcher";
+                            String taskDescr = jsonObjectRow.getString("name");
+                            String taskDescr_fullDescription = jsonObjectRow.getString("description");
+                            String address = jsonObjectRow.getString("address");
+                            String date = jsonObjectRow.getString("date");
+                            String time = jsonObjectRow.getString("time");
+                            String phone = jsonObjectRow.getString("phone");
+                            int taskMoney = jsonObjectRow.getInt("profit");
+
+                            Task newTask = new Task(id,imageName,taskDescr,taskDescr_fullDescription, address, date, time,  phone, taskMoney);
+                            myTasksArray[i] = newTask;
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+                    arrayAdapter = new TaskAdapter(getActivity(), R.layout.row, myTasksArray);
+                    setListAdapter(arrayAdapter);
+
+                }
+            }, new Response.ErrorListener()
+            {
+                public void onErrorResponse(VolleyError error)
+                {
+                    Log.d("Something went wrong", error.toString());
+                }
+            })
+            {
+                @Override
+                public Map<String, String> getParams()
+                {
+                    //parameters are send as a dictionary
+                    Map<String, String> params = new HashMap<>();
+                    return params;
+                }
+            };
+            requestQueue.add(putRequest);
         }
-
-        arrayAdapter = new TaskAdapter(getActivity(),R.layout.row,myTasksArray);
-        setListAdapter(arrayAdapter);
-
+        catch(Exception e)
+        {
+        }
         return rootView;
     }
 

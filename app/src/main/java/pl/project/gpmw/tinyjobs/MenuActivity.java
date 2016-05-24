@@ -31,10 +31,6 @@ import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONObject;
 
-
-/*TODO import name,points,ranking(stars) after login/register from database
-*TODO some serious AD should be in the bottom banner
-* */
 public class MenuActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
     // Remove the below line after defining your own ad unit ID.

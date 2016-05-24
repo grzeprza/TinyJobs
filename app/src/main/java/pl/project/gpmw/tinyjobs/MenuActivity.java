@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -44,6 +45,7 @@ public class MenuActivity extends AppCompatActivity implements GoogleApiClient.C
     public static double longitude;
     public static String name;
     public static int id;
+    public static String ipaddr;
     protected Location mLastLocation;
 
     Button button_findTinyJobs, button_placeTinyJobs, button_myTasks, button_getMorePoints;
@@ -52,6 +54,9 @@ public class MenuActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        //ipaddr = getResources().getString(R.string.ipAddressTel);
+        ipaddr = getResources().getString(R.string.ipAddressTel);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
@@ -62,7 +67,7 @@ public class MenuActivity extends AppCompatActivity implements GoogleApiClient.C
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
 
-        // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
+        // Toasts the2 test ad message on the screen. Remove this after defining your own ad unit ID.
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
 
         //STARTS FIND TINY JOBS ACTIVITY
@@ -120,6 +125,9 @@ public class MenuActivity extends AppCompatActivity implements GoogleApiClient.C
         mInterstitialAd = newInterstitialAd();
         loadInterstitial();
         buildGoogleApiClient();
+
+        TextView nameTextView = (TextView) findViewById(R.id.textView_userName);
+        nameTextView.setText(MenuActivity.name);
     }
 
     private InterstitialAd newInterstitialAd()

@@ -85,7 +85,7 @@ public class PlaceTinyJobActivity extends AppCompatActivity
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String suffix = "putjob";
-        String url = getResources().getString(R.string.ipAddressTel) + suffix;
+        String url = MenuActivity.ipaddr + suffix;
         StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
@@ -105,6 +105,7 @@ public class PlaceTinyJobActivity extends AppCompatActivity
             public Map<String, String> getParams()
             {
                 Map<String, String> params = new HashMap<>();
+                params.put("user", MenuActivity.name);
                 params.put("name", taskName);
                 params.put("description", taskDescription);
                 params.put("address", taskAddress);
@@ -114,10 +115,10 @@ public class PlaceTinyJobActivity extends AppCompatActivity
                 params.put("profit", taskProfit);
                 params.put("latitude", String.valueOf(MenuActivity.latitude));
                 params.put("longitude", String.valueOf(MenuActivity.longitude));
-                //params.put("user", MenuActivity.name);
                 return params;
             }
         };
         requestQueue.add(putRequest);
+
     }
 }

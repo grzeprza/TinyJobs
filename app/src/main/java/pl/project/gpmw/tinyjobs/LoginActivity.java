@@ -438,7 +438,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //IP address specific for localhost from the point of view of the virtual machine
 
-        String url = getResources().getString(R.string.ipAddressTel) + suffix;
+        String url = MenuActivity.ipaddr + suffix;
         StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override

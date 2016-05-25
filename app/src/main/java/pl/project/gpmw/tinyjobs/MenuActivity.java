@@ -1,11 +1,7 @@
 package pl.project.gpmw.tinyjobs;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -25,24 +21,16 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONObject;
 
-public class MenuActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+public class MenuActivity extends AppCompatActivity
 {
     // Remove the below line after defining your own ad unit ID.
     private static final String TOAST_TEXT = "Test ads are being shown. "
             + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
-    protected GoogleApiClient mGoogleApiClient;
-    public static double latitude;
-    public static double longitude;
     public static String name;
     public static int id;
-    public static String ipaddr;
-    protected Location mLastLocation;
 
     Button button_findTinyJobs, button_placeTinyJobs, button_myTasks, button_getMorePoints;
     private InterstitialAd mInterstitialAd;
@@ -50,8 +38,7 @@ public class MenuActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        //ipaddr = getResources().getString(R.string.ipAddressTel);
-        ipaddr = getResources().getString(R.string.ipAddressTel);
+        //ipaddr = getResources().getString(R.string.ipAddressTel)
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
@@ -120,7 +107,6 @@ public class MenuActivity extends AppCompatActivity implements GoogleApiClient.C
         // Create the InterstitialAd and set the adUnitId (defined in values/strings.xml).
         mInterstitialAd = newInterstitialAd();
         loadInterstitial();
-        buildGoogleApiClient();
 
         TextView nameTextView = (TextView) findViewById(R.id.textView_userName);
         nameTextView.setText(MenuActivity.name);
@@ -239,75 +225,5 @@ public class MenuActivity extends AppCompatActivity implements GoogleApiClient.C
     /**
      * Builds a GoogleApiClient. Uses the addApi() method to request the LocationServices API.
      */
-    protected synchronized void buildGoogleApiClient()
-    {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
 
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop()
-    {
-        super.onStop();
-        if (mGoogleApiClient.isConnected())
-        {
-            mGoogleApiClient.disconnect();
-        }
-    }
-
-    /**
-     * Runs when a GoogleApiClient object successfully connects.
-     */
-    @Override
-    public void onConnected(Bundle connectionHint)
-    {
-        // Provides a simple way of getting a device's location and is well suited for
-        // applications that do not require a fine-grained location and that do not need location
-        // updates. Gets the best and most recent location currently available, which may be null
-        // in rare cases when a location is not available.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (mLastLocation != null) {
-                latitude = mLastLocation.getLatitude();
-                longitude = mLastLocation.getLongitude();
-                Log.d("werloc", String.valueOf(latitude));
-                Log.d("werloc", String.valueOf(longitude));
-            }
-        }
-
-        @Override
-        public void onConnectionFailed(ConnectionResult result) {
-            // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
-            // onConnectionFailed.
-            Log.i("Localization", "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
-        }
-
-
-        @Override
-        public void onConnectionSuspended(int cause) {
-            // The connection to Google Play services was lost for some reason. We call connect() to
-            // attempt to re-establish the connection.
-            Log.i("Localization", "Connection suspended");
-            mGoogleApiClient.connect();
-        }
 }

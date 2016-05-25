@@ -32,7 +32,6 @@ public class TabFinished extends ListFragment
 
     Task myTasksArray[] = {};
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -42,14 +41,14 @@ public class TabFinished extends ListFragment
         try
         {
             RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
-            String suffix = "getjobs";
-            String url = MenuActivity.ipaddr + suffix;
-            StringRequest putRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
+            String suffix = "ordered";
+            String url = LoginActivity.ipaddr + suffix;
+            StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
             {
                 @Override
                 public void onResponse(String response)
                 {
-                    Log.d("WERR", response);
+                    Log.d("WERRFinished", response);
                     try
                     {
                         JSONObject jsonObject = new JSONObject(response);
@@ -97,6 +96,7 @@ public class TabFinished extends ListFragment
                 {
                     //parameters are send as a dictionary
                     Map<String, String> params = new HashMap<>();
+                    params.put("id", String.valueOf(LoginActivity.userID));
                     return params;
                 }
             };
@@ -115,5 +115,10 @@ public class TabFinished extends ListFragment
         startActivity(intent);
     }
 
+    @Override
+    public void setArguments(Bundle args)
+    {
+        super.setArguments(args);
+    }
 }
 

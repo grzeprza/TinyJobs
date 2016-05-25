@@ -74,7 +74,7 @@ public class MyTasksActivity extends AppCompatActivity {
 
         adapter.addFragment(tabRaised, "RAISED");
         adapter.addFragment(tabTaken, "TAKEN");
-        adapter.addFragment(tabFinished, "FINISHED");
+        adapter.addFragment(tabFinished, "MY ORDERS");
         viewPager.setAdapter(adapter);
     }
 

@@ -39,74 +39,6 @@ public class TabRaised extends ListFragment
 
         View rootView = inflater.inflate(R.layout.raised, container, false);
 
-
-        try {
-
-            RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
-            String suffix = "getjobs";
-            String url = MenuActivity.ipaddr + suffix;
-            StringRequest putRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
-            {
-                @Override
-                public void onResponse(String response)
-                {
-                    Log.d("WERR", response);
-                    try
-                    {
-                        JSONObject jsonObject = new JSONObject(response);
-                        JSONArray resultArray = jsonObject.getJSONArray("results");
-
-                        myTasksArray = new Task[resultArray.length()];
-
-                        for(int i =0; i<resultArray.length(); i++)
-                        {
-                            JSONObject jsonObjectRow = resultArray.getJSONObject(i);
-
-                            String id = jsonObjectRow.getString("id");
-                            String imageName = "ic_launcher";
-                            String taskDescr = jsonObjectRow.getString("name");
-                            String taskDescr_fullDescription = jsonObjectRow.getString("description");
-                            String address = jsonObjectRow.getString("address");
-                            String date = jsonObjectRow.getString("date");
-                            String time = jsonObjectRow.getString("time");
-                            String phone = jsonObjectRow.getString("phone");
-                            int taskMoney = jsonObjectRow.getInt("profit");
-
-                            Task newTask = new Task(id,imageName,taskDescr,taskDescr_fullDescription, address, date, time,  phone, taskMoney);
-                            myTasksArray[i] = newTask;
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    aarrayAdapter = new TaskAdapter(getActivity(), R.layout.row, myTasksArray);
-                    setListAdapter(aarrayAdapter);
-
-                }
-            }, new Response.ErrorListener()
-            {
-                public void onErrorResponse(VolleyError error)
-                {
-                    Log.d("Something went wrong", error.toString());
-                }
-            })
-            {
-                @Override
-                public Map<String, String> getParams()
-                {
-                    //parameters are send as a dictionary
-                    Map<String, String> params = new HashMap<>();
-                    return params;
-                }
-            };
-            requestQueue.add(putRequest);
-        }
-
-        catch(Exception e)
-        {
-        }
         return rootView;
     }
 
@@ -116,5 +48,71 @@ public class TabRaised extends ListFragment
         Intent intent = new Intent(getContext(), RaisedRowDetail.class);
         intent.putExtra("details",myTasksArray[position].toString());
         startActivity(intent);
+    }
+
+    @Override
+    public void setArguments(Bundle args)
+    {
+        super.setArguments(args);
+        RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
+        String suffix = "getjobs";
+        String url = LoginActivity.ipaddr + suffix;
+        StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Log.d("WERRaised", response);
+                try
+                {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray resultArray = jsonObject.getJSONArray("results");
+
+                    myTasksArray = new Task[resultArray.length()];
+
+                    for(int i =0; i<resultArray.length(); i++)
+                    {
+                        JSONObject jsonObjectRow = resultArray.getJSONObject(i);
+
+                        String id = jsonObjectRow.getString("id");
+                        String imageName = "ic_launcher";
+                        String taskDescr = jsonObjectRow.getString("name");
+                        String taskDescr_fullDescription = jsonObjectRow.getString("description");
+                        String address = jsonObjectRow.getString("address");
+                        String date = jsonObjectRow.getString("date");
+                        String time = jsonObjectRow.getString("time");
+                        String phone = jsonObjectRow.getString("phone");
+                        int taskMoney = jsonObjectRow.getInt("profit");
+
+                        Task newTask = new Task(id,imageName,taskDescr,taskDescr_fullDescription, address, date, time,  phone, taskMoney);
+                        myTasksArray[i] = newTask;
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                aarrayAdapter = new TaskAdapter(getActivity(), R.layout.row, myTasksArray);
+                setListAdapter(aarrayAdapter);
+
+            }
+        }, new Response.ErrorListener()
+        {
+            public void onErrorResponse(VolleyError error)
+            {
+                Log.d("Something went wrong", error.toString());
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getParams()
+            {
+                //parameters are send as a dictionary
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+        };
+        requestQueue.add(putRequest);
     }
 }

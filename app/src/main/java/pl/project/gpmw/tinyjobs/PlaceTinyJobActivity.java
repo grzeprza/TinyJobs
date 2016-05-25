@@ -63,6 +63,7 @@ public class PlaceTinyJobActivity extends AppCompatActivity
         });
     }
 
+
     private void updateLabel()
     {
         String dateForme = "dd/mm/yy";
@@ -75,7 +76,8 @@ public class PlaceTinyJobActivity extends AppCompatActivity
         final String taskName = ((EditText) findViewById(R.id.editText_placeTinyJob_taskName)).getText().toString();
         final String taskDescription = ((EditText) findViewById(R.id.editText_placeTinyJob_taskDescription)).getText().toString();
         final String taskAddress = ((EditText) findViewById(R.id.editText_placeTinyJob_finalAddress)).getText().toString();
-        final String taskDate = ((EditText) findViewById(R.id.editText_placeTinyJob_finalDate)).getText().toString();
+        final String taskDate = ((EditText) findViewById(R.id
+                .editText_placeTinyJob_finalDate)).getText().toString();
         final String taskTime = ((TimePicker) findViewById(R.id.editText_placeTinyJob_finalTime)).getCurrentHour().toString()
                 + ":" + ((TimePicker) findViewById(R.id.editText_placeTinyJob_finalTime)).getCurrentMinute().toString();
         final String taskPhone = ((EditText) findViewById(R.id.editText_placeTinyJob_contactPhone)).getText().toString();
@@ -85,7 +87,7 @@ public class PlaceTinyJobActivity extends AppCompatActivity
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String suffix = "putjob";
-        String url = MenuActivity.ipaddr + suffix;
+        String url = LoginActivity.ipaddr + suffix;
         StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
@@ -113,8 +115,8 @@ public class PlaceTinyJobActivity extends AppCompatActivity
                 params.put("time", taskTime);
                 params.put("phone", taskPhone);
                 params.put("profit", taskProfit);
-                params.put("latitude", String.valueOf(MenuActivity.latitude));
-                params.put("longitude", String.valueOf(MenuActivity.longitude));
+                params.put("latitude", String.valueOf(LoginActivity.latitude));
+                params.put("longitude", String.valueOf(LoginActivity.longitude));
                 return params;
             }
         };

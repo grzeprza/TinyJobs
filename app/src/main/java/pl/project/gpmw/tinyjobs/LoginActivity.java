@@ -1,5 +1,6 @@
 package pl.project.gpmw.tinyjobs;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,8 +18,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -31,6 +33,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +53,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>,  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
 
     /**
@@ -73,10 +78,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    public static String ipaddr;
+    public static double latitude;
+    public static double longitude;
+    public static int userID;
 
+    protected GoogleApiClient mGoogleApiClient;
+    protected Location mLastLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        ipaddr = getResources().getString(R.string.ipAddressTel);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
@@ -84,41 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener()
-//        {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent)
-//            {
-//                if (id == R.id.login || id == EditorInfo.IME_NULL)
-//                {
-//                    attemptLogin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
-//        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-//        mEmailSignInButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                attemptLogin();
-//            }
-//        });
-//
-//        Button mRegisterButton = (Button) findViewById(R.id.button_register);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-//                startActivity(i);
-//            }
-//        });
-
+        buildGoogleApiClient();
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -203,25 +181,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password))
-        {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email))
-        {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email))
-        {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
+//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password))
+//        {
+//            mPasswordView.setError(getString(R.string.error_invalid_password));
+//            focusView = mPasswordView;
+//            cancel = true;
+//        }
+//
+//        // Check for a valid email address.
+//        if (TextUtils.isEmpty(email))
+//        {
+//            mEmailView.setError(getString(R.string.error_field_required));
+//            focusView = mEmailView;
+//            cancel = true;
+//        } else if (!isEmailValid(email))
+//        {
+//            mEmailView.setError(getString(R.string.error_invalid_email));
+//            focusView = mEmailView;
+//            cancel = true;
+//        }
 
         if (cancel)
         {
@@ -424,7 +402,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     //due to fact the the difference is just the suffix
     public void onClick_signInSignUp(View v)
     {
-        attemptLogin();
         final String suffix
             = (v == (Button) findViewById(R.id.email_sign_in_button)) ? "login" : "register";
 
@@ -438,25 +415,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //IP address specific for localhost from the point of view of the virtual machine
 
-        String url = MenuActivity.ipaddr + suffix;
+        String url =  ipaddr + suffix;
         StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
         {
             @Override
             public void onResponse(String response)
             {
-                Log.d("Response", response);
                 Log.d("werresponse", response);
                 try
                 {
                     JSONObject jsonObject = new JSONObject(response);
                     if(suffix == "login" && jsonObject.getString("response").equals("true"))
                     {
-                        //attemptLogin();
+                        LoginActivity.userID = Integer.parseInt(jsonObject.getString("userID"));
+                        attemptLogin();
+                    }
+                    else if(suffix == "register" && jsonObject.getString("response").equals("User registered"))
+                    {
+                        attemptLogin();
+                    }
+                    else
+                    {
+                        mEmailView.setError(getString(R.string.wrong_credentials));
                     }
                 } catch (JSONException e)
                 {
-                    Log.d("werror:", "400");
-                    mEmailView.setError(getString(R.string.wrong_credentials));
+                    Log.d("werror:", "No db connection?");
+                    mEmailView.setError(getString(R.string.no_database_connection));
                     mEmailView.requestFocus();
                     //e.printStackTrace();
                 }
@@ -477,10 +462,83 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Map<String, String> params = new HashMap<>();
                 params.put("email", signEmail);
                 params.put("hash", signPassword);
+                params.put("longitude", String.valueOf(longitude));
+                params.put("latitude", String.valueOf(latitude));
                 return params;
             }
         };
         requestQueue.add(putRequest);
+    }
+    protected synchronized void buildGoogleApiClient()
+    {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        if (mGoogleApiClient.isConnected())
+        {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    /**
+     * Runs when a GoogleApiClient object successfully connects.
+     */
+    @Override
+    public void onConnected(Bundle connectionHint)
+    {
+        // Provides a simple way of getting a device's location and is well suited for
+        // applications that do not require a fine-grained location and that do not need location
+        // updates. Gets the best and most recent location currently available, which may be null
+        // in rare cases when a location is not available.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            latitude = mLastLocation.getLatitude();
+            longitude = mLastLocation.getLongitude();
+            Log.d("werloc", String.valueOf(latitude));
+            Log.d("werloc", String.valueOf(longitude));
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
+        // onConnectionFailed.
+        Log.i("Localization", "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        // The connection to Google Play services was lost for some reason. We call connect() to
+        // attempt to re-establish the connection.
+        Log.i("Localization", "Connection suspended");
+        mGoogleApiClient.connect();
     }
 }
 

@@ -65,6 +65,7 @@ public class MyTasksActivity extends AppCompatActivity {
 
         TabRaised tabRaised = new TabRaised();
         tabRaised.setArguments(bundleRaised);
+        tabRaised.show();
 
         TabTaken tabTaken = new TabTaken();
         tabTaken.setArguments(bundleTaken);

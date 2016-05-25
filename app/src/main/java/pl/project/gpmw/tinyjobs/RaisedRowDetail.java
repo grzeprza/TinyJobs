@@ -15,12 +15,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RaisedRowDetail extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
@@ -48,7 +57,7 @@ public class RaisedRowDetail extends Activity implements GoogleApiClient.Connect
     private InterstitialAd mInterstitialAd;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_raised_row_detail);
 
@@ -56,9 +65,47 @@ public class RaisedRowDetail extends Activity implements GoogleApiClient.Connect
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
               //  Snackbar.make(view, "Take this task ", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 showInterstitial();
+                RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
 
+                //IP address specific for localhost from the point of view of the virtual machine
+                String suffix = "takejob";
+                String url =  ipaddr + suffix;
+                StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        Log.d("werresponse", response);
+                        try
+                        {
+                            Log.d("wercom:", "Job taken");
+                        } catch (Exception e)
+                        {
+                            Log.d("werror:", "No db connection?");
+                        }
+                    }
+                }, new Response.ErrorListener()
+                {
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        Log.d("Something went wrong", error.toString());
+                    }
+                })
+                {
+                    @Override
+                    public Map<String, String> getParams()
+                    {
+                        //parameters are send as a dictionary
+                        Map<String, String> params = new HashMap<>();
+                        params.put("name",textView_title.getText().toString());
+                        params.put("id", String.valueOf(LoginActivity.userID));
+                        return params;
+                    }
+                };
+                requestQueue.add(putRequest);
             }
         });
 

@@ -35,25 +35,6 @@ public class TabRaised extends ListFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        String samplejson = getArguments().getString("json");
-
-        View rootView = inflater.inflate(R.layout.raised, container, false);
-
-        return rootView;
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-
-        Intent intent = new Intent(getContext(), RaisedRowDetail.class);
-        intent.putExtra("details",myTasksArray[position].toString());
-        startActivity(intent);
-    }
-
-    @Override
-    public void setArguments(Bundle args)
-    {
-        super.setArguments(args);
         RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
         String suffix = "getjobs";
         String url = LoginActivity.ipaddr + suffix;
@@ -114,5 +95,29 @@ public class TabRaised extends ListFragment
             }
         };
         requestQueue.add(putRequest);
+
+        String samplejson = getArguments().getString("json");
+
+        View rootView = inflater.inflate(R.layout.raised, container, false);
+
+        return rootView;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+
+        Intent intent = new Intent(getContext(), RaisedRowDetail.class);
+        intent.putExtra("details",myTasksArray[position].toString());
+        startActivity(intent);
+    }
+
+    @Override
+    public void setArguments(Bundle args)
+    {
+        super.setArguments(args);
+    }
+
+    public void show()
+    {
     }
 }
